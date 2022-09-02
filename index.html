@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Socket.IO chat</title>
+    <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
+    <title>Chat online</title>
 
     <style>
       body { margin: 0; padding-bottom: 3rem; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
@@ -45,7 +46,7 @@
 
       
       <span id="online-tab">
-        <span style="margin-left: 100px; color: green;"><b>ONLINE:</b></span>
+        <span style="margin-left: 60px; color: green;"><b>ONLINE:</b></span>
         <span id="user-list"></span> 
       </span>
     </form>
@@ -93,17 +94,18 @@
         window.scrollTo(0, document.body.scrollHeight);
     });
 
-    socket.on('user join', function(username) {
-        users.textContent += username;
+    socket.on('user join', function(username, count) {
+        users.textContent = count
         var item = document.createElement('li');
-        item.textContent = 'alguém conectou.';
+        item.innerHTML = '<i>alguém conectou.</i>';
         messages.appendChild(item);
         window.scrollTo(0, document.body.scrollHeight);
     });
 
-    socket.on('user exit', function() {
+    socket.on('user exit', function(count) {
+        users.textContent = count
         var item = document.createElement('li');
-        item.textContent = 'alguém saiu.';
+        item.textContent = '<i>alguém saiu.</i>';
         messages.appendChild(item);
         window.scrollTo(0, document.body.scrollHeight);
     });

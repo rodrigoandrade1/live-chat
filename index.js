@@ -15,10 +15,12 @@ io.on('connection', (socket) => {
     'Ezreal', 'Blitzcrank', 'Annie', 'Aatrox', 'Heisenberg', 'Fiddlesticks']
     let username = usernames[Math.floor(Math.random() * usernames.length)]
 
-    io.emit('user join', username);
+    const usersCount = io.engine.clientsCount;
+
+    io.emit('user join', username, usersCount);
 
     socket.on('disconnect', () => {
-        io.emit('user exit');
+        io.emit('user exit', usersCount);
     })
 
     socket.on('chat message', (msg) => {
