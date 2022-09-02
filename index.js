@@ -10,7 +10,7 @@ app.get('/', (req, res) => {
 });
 
 io.on('connection', (socket) => {
-    let username = ''
+    let username = 'Unknown'
     io.emit('user join');
 
     socket.on('disconnect', () => {
