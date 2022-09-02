@@ -105,7 +105,7 @@
     socket.on('user exit', function(count) {
         users.textContent = count
         var item = document.createElement('li');
-        item.textContent = '<i>alguém saiu.</i>';
+        item.innerHTML = '<i>alguém saiu.</i>';
         messages.appendChild(item);
         window.scrollTo(0, document.body.scrollHeight);
     });
