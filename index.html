@@ -1,28 +1,59 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Socket.IO chat</title>
+
     <style>
       body { margin: 0; padding-bottom: 3rem; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
-
       #form { background: rgba(0, 0, 0, 0.15); padding: 0.25rem; position: fixed; bottom: 0; left: 0; right: 0; display: flex; height: 3rem; box-sizing: border-box; backdrop-filter: blur(10px); }
       #input { border: none; padding: 0 1rem; flex-grow: 1; border-radius: 2rem; margin: 0.25rem; }
       #input:focus { outline: none; }
-      #form > button { background: #333; border: none; padding: 0 1rem; margin: 0.25rem; border-radius: 3px; outline: none; color: #fff; }
+      #form > button { background: rgb(73, 73, 170); border: none; padding: 0 1rem; margin: 0.25rem; border-radius: 3px; outline: none; color: #fff; cursor: pointer;}
 
       #messages { list-style-type: none; margin: 0; padding: 0; }
       #messages > li { padding: 0.5rem 1rem; }
       #messages > li:nth-child(odd) { background: #efefef; }
+
+      #name-form {
+        background-color: rgb(207, 206, 206);
+        padding: 5px;
+      }
+
+      #name-input {
+        border: none;
+        padding: 3px 5px;
+      }
+
+      #name-change-btn{
+        background-color: rgb(73, 73, 170);
+        color: white;
+        border-radius: 5%;
+        border: none;
+        padding: 3px 7px;
+        cursor: pointer;
+      }
     </style>
+
   </head>
   <body>
     <form id="name-form" action="">
-        <input type="text" id="name-input" placeholder="Nickname">
-        <button>Change</button>
+      <input type="text" id="name-input" placeholder="Nome">
+      <button id="name-change-btn">Alterar</button>
+
+      
+      <span id="online-tab">
+        <span style="margin-left: 100px; color: green;"><b>ONLINE:</b></span>
+        <span id="user-list"></span> 
+      </span>
     </form>
     <ul id="messages"></ul>
+    <div id="typing"></div>
+    
     <form id="form" action="">
-      <input id="input" autocomplete="off" /><button>Send</button>
+      <input id="input" autocomplete="off" /><button>Enviar</button>
     </form>
 
     <script src="/socket.io/socket.io.js"></script>
@@ -34,6 +65,8 @@
     var input = document.getElementById('input');
     var nameform = document.getElementById('name-form');
     var nameinput = document.getElementById('name-input')
+    var typing = document.getElementById('typing')
+    var users = document.getElementById('user-list')
 
     form.addEventListener('submit', function(e) {
         e.preventDefault();
@@ -60,16 +93,17 @@
         window.scrollTo(0, document.body.scrollHeight);
     });
 
-    socket.on('user join', function() {
+    socket.on('user join', function(username) {
+        users.textContent += username;
         var item = document.createElement('li');
-        item.textContent = 'user joined.';
+        item.textContent = 'alguém conectou.';
         messages.appendChild(item);
         window.scrollTo(0, document.body.scrollHeight);
     });
 
     socket.on('user exit', function() {
         var item = document.createElement('li');
-        item.textContent = 'user disconnected.';
+        item.textContent = 'alguém saiu.';
         messages.appendChild(item);
         window.scrollTo(0, document.body.scrollHeight);
     });

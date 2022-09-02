@@ -10,8 +10,12 @@ app.get('/', (req, res) => {
 });
 
 io.on('connection', (socket) => {
-    let username = 'Unknown'
-    io.emit('user join');
+    let usernames = ['Cleber', 'Pinguim', 'Steve Jobs', 'Biscoito',
+    'Elon Musk', 'Foguete', 'Windows', 'Linux', 'Yamaha', 'Honda', 'BMW',
+    'Ezreal', 'Blitzcrank', 'Annie', 'Aatrox', 'Heisenberg', 'Fiddlesticks']
+    let username = usernames[Math.floor(Math.random() * usernames.length)]
+
+    io.emit('user join', username);
 
     socket.on('disconnect', () => {
         io.emit('user exit');
